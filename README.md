@@ -1,6 +1,5 @@
 # Security Operations Center and Honeynet in Azure
 
-<img width="1536" height="1024" alt="Architecture" src="https://github.com/user-attachments/assets/32ab2707-8243-4015-956f-bbd558efd5a0" />
 
 ## Introduction
 In this project, I designed and deployed a mini honeynet in Microsoft Azure to simulate an enterprise environment exposed to potential attacks. Logs from various resources were ingested into a Log Analytics Workspace, which was then connected to Microsoft Sentinel to monitor, visualize, and respond to security events.
