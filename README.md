@@ -1,5 +1,7 @@
 # Security Operations Center and Honeynet in Azure
 
+<img width="946" height="636" alt="Untitled Diagram2 drawio" src="https://github.com/user-attachments/assets/8f5a1919-7cdb-463c-9a37-12f5dab06d36" />
+
 
 ## Introduction
 In this project, I designed and deployed a mini honeynet in Microsoft Azure to simulate an enterprise environment exposed to potential attacks. Logs from various resources were ingested into a Log Analytics Workspace, which was then connected to Microsoft Sentinel to monitor, visualize, and respond to security events.
@@ -34,12 +36,11 @@ The architecture of the mini honeynet in Azure consists of the following compone
 - Azure Storage Account
 - Microsoft Sentinel
 
-## Attack Maps Before Hardening
-...
-
 ## Metrics Before Hardening
 The following table shows the metrics we measured in our insecure environment for 24 hours:
+</br>
 | Start Time 8/20/2025, 13:11:13 PM
+</br>
 | Stop Time 8/21/2025, 13:11:13 PM
 
 | Metric                   | Count
@@ -49,23 +50,28 @@ The following table shows the metrics we measured in our insecure environment fo
 | SecurityAlert            | 172
 | SecurityIncident         | 226
 
-## Attack Maps After Hardening
-...
-
 ## Metrics After Hardening
 The following table shows the metrics we measured in our insecure environment for 24 hours:
-| Start Time 8/20/2025, 13:11:13 PM
-| Stop Time 8/21/2025, 13:11:13 PM
+</br>
+| Start Time 8/21/2025, 13:36:59 PM
+</br>
+| Stop Time 8/22/2025, 13:36:59 PM
 
 | Metric                   | Count
 | ------------------------ | -----
-| SecurityEvent            | 0
+| SecurityEvent            | 1621
 | Syslog                   | 0
-| SecurityAlert            | 0
-| SecurityIncident         | 0
+| SecurityAlert            | 5
+| SecurityIncident         | 5
 
 ## Results & Analysis
-...
+
+| Results                                       | Change after security environment                                                                                                                                            |
+|----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| Security Events (Windows VMs)                | **93.6% (from 25,301 → 1,621)** The drastic reduction shows that Windows systems were hardened, eliminating most brute-force attempts. |
+| Syslog (Linux VMs)                           | **100% (from 5,147 → 0)** Indicates that SSH brute-force and other Linux-targeted attempts were fully blocked after applying hardening. |
+| SecurityAlert (Microsoft Defender for Cloud) | **97.1% (from 172 → 5)** Defender alerts decreased significantly, confirming that security posture improvements (patching, NSG, key vault access restrictions) prevented most malicious detections.  |
+| Security Incident (Sentinel Incidents)       | **97.8% (from 226 → 5)** The SOC incident queue dropped dramatically, showing Sentinel had far fewer true/false positives to escalate after attack surface reduction.             |
 
 ## Summary
 
@@ -84,8 +90,9 @@ By simulating attacks and applying security controls, I showcased both defensive
 | Start/Stop Time                              | range x from 1 to 1 step 1<br>\| project StartTime = ago(24h), StopTime = now()                                                                  |
 | Security Events (Windows VMs)                | SecurityEvent<br>\| where TimeGenerated>= ago(24h)<br>\| count                                                                                   |
 | Syslog (Linux VMs)                           | Syslog<br>\| where TimeGenerated >= ago(24h)<br>\| count                                                                                         |
-| SecurityAlert (Microsoft Defender for Cloud) | SecurityAlert<br>\| where DisplayName !startswith "CUSTOM" and DisplayName !startswith "TEST"<br>\| where TimeGenerated >= ago(24h)<br>\| count |
+| SecurityAlert (Microsoft Defender for Cloud) | SecurityAlert<br>\| where DisplayName !startswith "CUSTOM" and DisplayName !startswith "TEST"<br>\| where TimeGenerated >= ago(24h)<br>\| count  |
 | Security Incident (Sentinel Incidents)       | SecurityIncident<br>\| where TimeGenerated >= ago(24h)<br>\| count                                                                               |
 
 ## Reference
-...
+- [GitHub](https://github.com/kphillip1/azure-soc-honeynet/blob/main/README.md)
+- [Youtube](https://www.youtube.com/watch?v=mOjbD7FkUUI)
